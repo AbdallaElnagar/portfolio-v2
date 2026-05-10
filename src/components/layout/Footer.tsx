@@ -94,7 +94,7 @@ const Footer = () => {
             © {currentYear} {personalInfo.name}. All rights reserved.
           </p>
           <p className='text-gray-400 text-sm text-center md:text-right'>
-            Built with ❤️ using React, TypeScript & Tailwind CSS
+            Built with Abdalla Elnagar using React, TypeScript & Tailwind CSS
           </p>
         </div>
       </div>

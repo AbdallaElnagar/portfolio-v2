@@ -2,7 +2,7 @@
 export const personalInfo = {
   name: 'Abdalla Elnagar',
   role: 'Junior Full Stack Developer',
-  location: 'Cairo, Egypt',
+  // location: 'Cairo, Egypt',
   tagline:
     'ITI Graduate passionate about building modern web applications with React and Node.js',
   bio: `Junior Full Stack Developer and recent ITI graduate with hands-on experience in the MERN stack. 
@@ -17,7 +17,7 @@ export const personalInfo = {
     // twitter: 'https://twitter.com/abdallaelnagar',
     portfolio: 'https://abdallaelnagar.dev',
   },
-  resume: '/Abdalla_Elnagar_cv.pdf',
+  resume: '/public/Abdalla_Elnagar_cv .pdf',
 };
 
 export const skills = [
