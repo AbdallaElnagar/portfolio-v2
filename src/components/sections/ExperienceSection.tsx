@@ -186,7 +186,7 @@ const ExperienceSection = () => {
           className='text-center mt-12'
         >
           <a
-            href='/public/Abdalla_Elnagar_cv .pdf'
+            href='/public/Abdalla_Elnagar_cv.pdf'
             download
             className='inline-flex items-center gap-2 btn-primary px-8 py-3'
           >

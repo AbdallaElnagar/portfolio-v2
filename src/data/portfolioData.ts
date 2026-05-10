@@ -17,7 +17,7 @@ export const personalInfo = {
     // twitter: 'https://twitter.com/abdallaelnagar',
     portfolio: 'https://abdallaelnagar.dev',
   },
-  resume: '/public/Abdalla_Elnagar_cv .pdf',
+  resume: '/public/Abdalla_Elnagar_cv.pdf',
 };
 
 export const skills = [
