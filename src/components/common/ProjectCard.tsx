@@ -79,9 +79,6 @@ export default function ProjectCard({ project, index = 0, onClick }: ProjectCard
           <span className="text-xs font-bold uppercase tracking-wider font-mono text-[#e0f2fe] group-hover:text-cyan-400 transition-colors duration-300">
             {project.title.split(' – ')[0]}
           </span>
-          <span className="text-[8px] text-gray-500 font-mono tracking-widest uppercase mt-1 group-hover:text-cyan-500/60 transition-colors duration-300">
-            SYS.{project.category.replace(' ', '_')} // COMP_0{project.id}
-          </span>
         </div>
       </motion.div>
     </div>

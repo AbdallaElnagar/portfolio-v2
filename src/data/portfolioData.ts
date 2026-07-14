@@ -12,7 +12,7 @@ export const personalInfo = {
     github: 'https://github.com/AbdallaElnagar',
     linkedin:
       'https://www.linkedin.com/in/abdalla-elnager-bb867022a/?lipi=urn%3Ali%3Apage%3Ad_flagship3_feed%3BspgXOwKmQBKFAzPnza9avQ%3D%3D',
-    twitter: 'https://twitter.com/abdallaelnagar',
+    twitter: 'https://x.com/abdala_3l_nagar',
     portfolio: 'https://abdallaelnagar.dev',
   },
   resume: '/public/Abdalla_Elnagar_cv.pdf',
@@ -327,7 +327,7 @@ export const experience = [
   {
     id: '1',
     company: 'Information Technology Institute (ITI)',
-    position: 'Software Engineering Trainee',
+    position: 'MEA|RN Full-Stack Trainee',
     location: 'Cairo, Egypt',
     startDate: '2026-01',
     endDate: '2026-06',

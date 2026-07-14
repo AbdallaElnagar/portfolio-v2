@@ -62,7 +62,7 @@ const Header = () => {
     e.preventDefault();
     setIsMenuOpen(false);
 
-    if (location.pathname === '/') {
+    const scrollToSection = () => {
       const element = document.getElementById(section);
       if (element) {
         const offset = 90; // Height of navbar
@@ -73,20 +73,14 @@ const Header = () => {
           behavior: 'smooth',
         });
       }
+    };
+
+    if (location.pathname === '/') {
+      // Delay scrolling slightly on mobile/desktop to prevent close animation from interrupting it
+      setTimeout(scrollToSection, 200);
     } else {
       navigate(href);
-      setTimeout(() => {
-        const element = document.getElementById(section);
-        if (element) {
-          const offset = 90;
-          const elementPosition = element.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.scrollY - offset;
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth',
-          });
-        }
-      }, 100);
+      setTimeout(scrollToSection, 200);
     }
   };
 
@@ -187,7 +181,7 @@ const Header = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-b border-white/10 bg-[#020617]/95 backdrop-blur-2xl shadow-2xl px-4 py-4 absolute w-full left-0"
+            className="md:hidden border-b border-white/10 bg-[#020617]/95 backdrop-blur-2xl shadow-2xl px-4 py-4 absolute w-full left-0 z-50"
           >
             <div className="flex flex-col space-y-2 max-w-md mx-auto">
               {navigation.map((item) => (

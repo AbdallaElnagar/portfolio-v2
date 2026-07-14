@@ -13,7 +13,7 @@ interface Star {
   isCyan: boolean;
 }
 
-const N          = 420;
+const N          = 150;
 const REPEL_R    = 110;       // px – repulsion bubble radius
 const REPEL_STR  = 34;        // max displacement force
 const SPRING     = 0.048;     // spring-return stiffness
@@ -33,7 +33,7 @@ export const BackgroundSpace = () => {
     const onLeave = () => { mouse.current.x = -9999; mouse.current.y = -9999; };
     const onScroll = () => {
       const cy = window.scrollY;
-      scroll.current.vel   = Math.min(Math.abs(cy - scroll.current.lastY) * 0.3, 60);
+      scroll.current.vel   = Math.min(Math.abs(cy - scroll.current.lastY) * 0.05, 10);
       scroll.current.lastY = cy;
     };
     window.addEventListener('mousemove', onMove);
@@ -83,7 +83,7 @@ export const BackgroundSpace = () => {
           maxOpacity: Math.random() * 0.55 + 0.45,  // 0.45–1.0
           opacity:    Math.random(),
           phase:      Math.random() * Math.PI * 2,
-          phaseSpeed: Math.random() * 0.018 + 0.005,
+          phaseSpeed: Math.random() * 0.008 + 0.002,
           isCyan:     Math.random() > 0.86,
         };
       });
@@ -120,7 +120,7 @@ export const BackgroundSpace = () => {
       }
 
       scroll.current.vel *= 0.90;
-      const warpDelta = scroll.current.vel * 0.4; // extra downward drift when scrolling
+      const warpDelta = scroll.current.vel * 0.15; // extra downward drift when scrolling
 
       const mx = mouse.current.x;
       const my = mouse.current.y;
@@ -130,7 +130,7 @@ export const BackgroundSpace = () => {
 
       stars.forEach((s, idx) => {
         // Continuous slow background travel drift (larger stars drift faster)
-        const baseDrift = 0.08 + (s.r * 0.04);
+        const baseDrift = 0.02 + (s.r * 0.015);
         s.oy += baseDrift + warpDelta;
 
         // Wrap home coordinates if they go off screen

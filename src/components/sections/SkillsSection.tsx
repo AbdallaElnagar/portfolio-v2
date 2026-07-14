@@ -10,36 +10,7 @@ const iconMap: Record<string, any> = {
   Databases: Database,
 };
 
-const colorMap: Record<string, { ring: string; glow: string; text: string; bg: string; color: string }> = {
-  Frontend: {
-    ring: 'border-cyan-500/30',
-    glow: 'shadow-[0_0_20px_rgba(6,182,212,0.25)]',
-    text: 'text-cyan-400',
-    bg: 'bg-cyan-500/10',
-    color: '#22d3ee',
-  },
-  Backend: {
-    ring: 'border-emerald-500/30',
-    glow: 'shadow-[0_0_20px_rgba(16,185,129,0.25)]',
-    text: 'text-emerald-400',
-    bg: 'bg-emerald-500/10',
-    color: '#10b981',
-  },
-  Databases: {
-    ring: 'border-purple-500/30',
-    glow: 'shadow-[0_0_20px_rgba(168,85,247,0.25)]',
-    text: 'text-purple-400',
-    bg: 'bg-purple-500/10',
-    color: '#a855f7',
-  },
-  DevOps: {
-    ring: 'border-pink-500/30',
-    glow: 'shadow-[0_0_20px_rgba(236,72,153,0.25)]',
-    text: 'text-pink-400',
-    bg: 'bg-pink-500/10',
-    color: '#ec4899',
-  },
-};
+
 
 const planetDescriptions: Record<string, string> = {
   Frontend: 'Client presentation systems, custom components, responsive grids, and spring-based layouts.',
@@ -67,7 +38,6 @@ const SkillsSection = () => {
   const [viewMode, setViewMode] = useState<'core' | 'aux'>('core');
 
   const activeCategory = (skills.find((c) => c.category === activePlanet) || skills[0])!;
-  const activeColor = (colorMap[activePlanet] || colorMap.Frontend)!;
 
   return (
     <section id="skills" className="py-24 md:py-36 relative overflow-hidden bg-transparent">
