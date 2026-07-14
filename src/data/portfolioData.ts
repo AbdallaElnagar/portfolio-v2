@@ -62,9 +62,9 @@ export const projects = [
     shortDescription:
       'A MERN-stack service marketplace connecting clients with skilled local technicians and handymen.',
     longDescription: `Engineered a comprehensive service marketplace platform (OstaFinder) connecting clients with local technicians and handymen. Developed separate workflows and dashboards for clients, service providers (workers), and platform administrators. Built with a robust React frontend and a scalable Express/Node.js backend, the platform features a responsive design, advanced category filtering, Supabase storage integration, and an intelligent AI assistant utilizing the OpenAI API to guide user queries.`,
-    image: '..//../public/images/OstaFinder.png',
+    image: '/images/OstaFinder.png',
     images: [
-      'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80',
+      '/images/OstaFinder.png',
     ],
     technologies: [
       'React',
@@ -104,9 +104,9 @@ export const projects = [
     shortDescription:
       'Modern responsive portfolio with optimized performance and smooth animations',
     longDescription: `Built a modern responsive portfolio using modular React architecture and component-based design. Implemented lazy loading, code splitting, and performance optimization techniques to improve Core Web Vitals. Focused on smooth user experience with Framer Motion animations and responsive design across all devices.`,
-    image: '..//../public/images/Portfolio.png',
+    image: '/images/Portfolio.png',
     images: [
-      'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80',
+      '/images/Portfolio2.png',
     ],
     technologies: ['React', 'Bootstrap', 'Framer Motion', 'Vite', 'UI/UX'],
     category: 'Frontend',
@@ -136,10 +136,10 @@ export const projects = [
     shortDescription:
       'AI-powered fitness ecosystem with nutrition assistant and adaptive exercise library',
     longDescription: `Engineered a comprehensive fitness ecosystem featuring an AI-powered nutrition assistant and adaptive exercise library. Implemented personalized health tracking tools, dynamic filtering systems, and user goal analytics to enhance engagement and retention. Built a scalable architecture supporting modular expansion and real-time user interaction.`,
-    image: '..//../public/images/FitPower.png',
+    image: '/images/FitPower.png',
     images: [
-      '..//../public/images/FitPower.png',
-      '..//../public/images/FitPower2.png',
+      '/images/FitPower.png',
+      '/images/FitPower2.png',
     ],
     technologies: [
       'Angular',
@@ -176,10 +176,10 @@ export const projects = [
     shortDescription:
       'Scalable outdoor gear e-commerce with admin dashboard and real-time inventory',
     longDescription: `Developed a scalable outdoor gear e-commerce platform with comprehensive admin dashboard and dynamic catalog system. Implemented JWT authentication, reactive state management using RxJS, and optimized checkout flow. Enhanced system performance with RxJS streams and real-time inventory synchronization for seamless shopping experience.`,
-    image: '..//../public/images/TripStore.png',
+    image: '/images/TripStore.png',
     images: [
-      '..//../public/images/TripStore.png',
-      '..//../public/images/TripStore2.png',
+      '/images/TripStore.png',
+      '/images/TripStore2.png',
     ],
     technologies: ['Angular', 'Node.js', 'Express', 'MongoDB', 'RxJS', 'JWT'],
     category: 'Full Stack',
@@ -210,8 +210,8 @@ export const projects = [
     shortDescription:
       'Complete exam platform with role-based access and auto-grading system',
     longDescription: `Developed a comprehensive online examination platform with role-based access control for students and instructors. Implemented timed exams with auto-grading system, analytics dashboard for performance tracking, and secure authentication. Added real-time monitoring capabilities for scalable academic usage across multiple institutions.`,
-    image: '..//../public/images/Examination-System.png',
-    images: ['..//../public/images/ExamSystem.png'],
+    image: '/images/Examination-System.png',
+    images: ['/images/ExamSystem.png'],
     technologies: [
       'React',
       'Node.js',
