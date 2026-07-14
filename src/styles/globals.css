@@ -4,53 +4,58 @@
 
 /* ================= ROOT THEME ================= */
 :root {
-  --border: 214 32% 91%;
-  --input: 214 32% 91%;
-  --ring: 221.2 83.2% 53.3%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 188 91% 43%; /* Cyber Cyan */
 
-  --background: 222 84% 5%;
-  --foreground: 210 40% 98%;
+  --background: 0 0% 0%; /* Absolute Pitch Black Space Void */
+  --foreground: 204 93.8% 94.1%; /* Starlight White */
 
-  --primary: 221.2 83.2% 53.3%;
-  --primary-foreground: 210 40% 98%;
+  --primary: 188 91% 43%; /* Cyber Cyan */
+  --primary-foreground: 0 0% 0%;
 
-  --secondary: 262.1 83.3% 57.8%;
-  --secondary-foreground: 210 40% 98%;
+  --secondary: 0 0% 0%; /* Deep Void */
+  --secondary-foreground: 204 93.8% 94.1%;
 }
 
 /* ================= BASE ================= */
 @layer base {
   * {
-    @apply border-border;
+    @apply border-white/10;
   }
 
   body {
-    @apply bg-dark-950 text-white font-sans;
+    @apply text-white font-sans overflow-x-hidden;
     font-feature-settings:
       'rlig' 1,
       'calt' 1;
+    background-color: #000000; /* Absolute pitch-black void so Canvas stars shine */
   }
 
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 80px; /* Account for fixed navbar */
+    scroll-padding-top: 100px; /* Account for floating header */
+    background-color: #000000;
+    overflow-x: hidden;
   }
 
-  /* Scrollbar */
+  /* Scrollbar - Spaceship Dashboard Input Indicator */
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-dark-900;
+    background: #000000; /* Absolute black track void */
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-dark-700 rounded-full;
+    background: rgba(6, 182, 212, 0.25); /* Semi-transparent cyber-cyan line */
+    border-radius: 9999px;
+    transition: background 0.3s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-dark-600;
+    background: #06b6d4; /* Flashes vibrant neon cyan */
   }
 
   /* Selection */
@@ -58,72 +63,146 @@
     @apply bg-primary/30 text-white;
   }
 
-  /* Focus */
-  :focus-visible {
-    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-dark-950;
+  /* Focus outline settings */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  [role="button"]:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-black;
   }
 }
 
 /* ================= COMPONENTS ================= */
 @layer components {
   .glass-card {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl;
-  }
-
-  .glass-button {
-    @apply bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-xl transition-all duration-300;
+    background: rgba(0, 0, 0, 0.2); /* Reduced opacity to render drifting background stars clearly */
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.6),
+      inset 0 1px 1px rgba(255, 255, 255, 0.02);
+    @apply rounded-3xl transition-all duration-500 ease-out;
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-cyan-300 via-sky-200 to-white bg-clip-text text-transparent font-black;
   }
 
   .btn-primary {
-    @apply bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-xl transition-all;
+    @apply bg-primary hover:bg-primary/95 text-black font-bold px-6 py-3.5 rounded-xl transition-all duration-300 shadow-lg shadow-primary/25 hover:shadow-primary/45 hover:-translate-y-0.5 active:translate-y-0;
   }
 
   .btn-secondary {
-    @apply bg-secondary hover:bg-secondary/90 text-white font-medium px-6 py-3 rounded-xl transition-all;
+    @apply bg-white/10 hover:bg-white/20 text-white font-bold px-6 py-3.5 rounded-xl transition-all duration-300 border border-white/10 hover:-translate-y-0.5 active:translate-y-0;
   }
 
   .btn-outline {
-    @apply border border-primary text-primary hover:bg-primary hover:text-white px-6 py-3 rounded-xl transition-all;
-  }
-
-  .card {
-    @apply bg-dark-800/50 border border-dark-700 rounded-2xl p-6;
-  }
-
-  .card-hover {
-    @apply card hover:border-dark-600 hover:shadow-lg transition-all cursor-pointer;
+    @apply border border-primary/40 text-primary hover:bg-primary/10 hover:text-white hover:border-primary/80 font-bold px-6 py-3.5 rounded-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0;
   }
 
   .input-field {
-    @apply bg-dark-800 border border-dark-700 text-white rounded-xl px-4 py-3 focus:border-primary;
-  }
-}
-
-/* ================= UTILITIES ================= */
-@layer utilities {
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    @apply bg-black/40 border border-white/10 text-white rounded-xl px-4 py-3.5 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all duration-300 font-medium;
   }
 }
 
 /* ================= ANIMATIONS ================= */
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.8);
   }
   50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+    opacity: 1;
+    transform: scale(1.2);
   }
 }
+
+.warp-lines {
+  background-image: 
+    radial-gradient(1.5px 80px at 15% 25%, #ffffff, transparent),
+    radial-gradient(2px 100px at 35% 65%, #06b6d4, transparent),
+    radial-gradient(2.5px 140px at 55% 15%, #93c5fd, transparent),
+    radial-gradient(1.5px 70px at 75% 45%, #ffffff, transparent),
+    radial-gradient(3px 180px at 10% 85%, #bfdbfe, transparent),
+    radial-gradient(2px 110px at 85% 75%, #06b6d4, transparent),
+    radial-gradient(1.5px 95px at 25% 90%, #ffffff, transparent),
+    radial-gradient(2.5px 150px at 90% 15%, #06b6d4, transparent);
+  background-size: 100% 100%;
+  animation: warpStreaks 0.45s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+  transform: scale(1.5);
+  filter: blur(0.5px);
+}
+
+@keyframes warpStreaks {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+@keyframes flow {
+  from {
+    stroke-dashoffset: 20;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-flow {
+  animation: flow 1.2s linear infinite;
+}
+
+@keyframes meteor {
+  0% {
+    transform: translate(-10%, -10%) rotate(45deg) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(110%, 110%) rotate(45deg) scale(1.2);
+    opacity: 0;
+  }
+}
+
+.meteor-trail {
+  animation: meteor 12s linear infinite;
+}
+
+@keyframes scanning {
+  0% {
+    top: 0%;
+    opacity: 0.8;
+  }
+  50% {
+    top: 100%;
+    opacity: 0.8;
+  }
+  100% {
+    top: 0%;
+    opacity: 0.8;
+  }
+}
+
+.laser-scan {
+  animation: scanning 7s ease-in-out infinite;
+}
+
+.text-glow-cyan {
+  color: #22d3ee; /* cyan-400 */
+  text-shadow: 0 0 8px rgba(34, 211, 238, 0.6), 0 0 20px rgba(34, 211, 238, 0.3);
+}
+

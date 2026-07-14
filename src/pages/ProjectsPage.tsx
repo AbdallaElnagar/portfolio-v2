@@ -1,12 +1,23 @@
-import { motion, useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useMotionValue, animate } from 'framer-motion';
 import { projects } from '../data/portfolioData';
-import { ArrowTopRightOnSquareIcon, CodeBracketIcon } from '@heroicons/react/24/outline';
+import ProjectCard, { Project } from '../components/common/ProjectCard';
+import { ProjectModal } from '../components/common/ProjectModal';
+
+const pageVariants = {
+  initial: { opacity: 0, scale: 0.96, filter: 'blur(12px)' },
+  animate: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
+  exit: { opacity: 0, scale: 1.04, filter: 'blur(12px)', transition: { duration: 0.35, ease: 'easeInOut' } },
+};
 
 const ProjectsPage = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [filter, setFilter] = useState('All');
+  const [isPaused, setIsPaused] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  
+  const containerRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const animationControls = useRef<any>(null);
 
   const categories = ['All', 'Full Stack', 'Frontend', 'Featured'];
   const filteredProjects = filter === 'All' 
@@ -15,45 +26,81 @@ const ProjectsPage = () => {
     ? projects.filter(p => p.featured)
     : projects.filter(p => p.category === filter);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
+  // Triple-duplicate items for smooth continuous loop wrapping
+  const marqueeProjects = [...filteredProjects, ...filteredProjects, ...filteredProjects];
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 },
-    },
-  };
+  useEffect(() => {
+    let active = true;
+    if (!containerRef.current || filteredProjects.length === 0) return;
+
+    const singleSetWidth = containerRef.current.scrollWidth / 3;
+
+    const startMarquee = () => {
+      const currentX = x.get();
+      const targetX = -singleSetWidth;
+
+      if (currentX <= targetX) {
+        x.set(0);
+      }
+
+      const remainingDistance = Math.abs(targetX - x.get());
+      const baseDuration = 38; // Speed factor
+      const duration = (remainingDistance / singleSetWidth) * baseDuration;
+
+      animationControls.current = animate(x, targetX, {
+        ease: 'linear',
+        duration: duration,
+        onComplete: () => {
+          if (active) {
+            x.set(0);
+            startMarquee();
+          }
+        },
+      });
+    };
+
+    if (!isPaused) {
+      startMarquee();
+    } else {
+      if (animationControls.current) {
+        animationControls.current.stop();
+      }
+    }
+
+    return () => {
+      active = false;
+      if (animationControls.current) {
+        animationControls.current.stop();
+      }
+    };
+  }, [isPaused, filteredProjects, x]);
+
+  // Reset marquee scroll positions on category filter
+  useEffect(() => {
+    x.set(0);
+  }, [filter, x]);
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="pt-24 pb-20 min-h-screen"
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className="pt-24 pb-20 min-h-screen bg-transparent relative z-10 flex flex-col justify-center"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8" ref={ref}>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 bg-transparent">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-12 bg-transparent"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            All <span className="gradient-text">Projects</span>
+          <h1 className="text-4xl md:text-5xl font-black mb-4">
+            Galaxy <span className="gradient-text">Missions</span>
           </h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Explore my complete portfolio of web applications and development projects
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto font-medium">
+            Explore the complete log coordinates of all full-stack applications and components.
           </p>
         </motion.div>
 
@@ -62,16 +109,16 @@ const ProjectsPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-3 mb-12"
+          className="flex flex-wrap justify-center gap-3 mb-16 bg-black/40 border border-white/5 p-2 rounded-2xl max-w-md mx-auto backdrop-blur-md"
         >
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setFilter(category)}
-              className={`px-6 py-2 rounded-full font-medium transition-all ${
+              className={`px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 font-mono ${
                 filter === category
-                  ? 'bg-primary text-white shadow-lg shadow-primary/50'
-                  : 'bg-dark-800/50 text-gray-400 hover:text-white hover:bg-dark-800'
+                  ? 'bg-[#06b6d4]/10 border border-[#06b6d4]/40 text-[#06b6d4] shadow-[0_0_15px_rgba(6,182,212,0.15)]'
+                  : 'bg-transparent text-gray-500 hover:text-white border border-transparent'
               }`}
             >
               {category}
@@ -79,123 +126,44 @@ const ProjectsPage = () => {
           ))}
         </motion.div>
 
-        {/* Projects Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+        {/* Autonomous Infinite Horizontal Marquee Carousel */}
+        <div 
+          className="w-full overflow-hidden cursor-pointer py-6 relative bg-transparent"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
         >
-          {filteredProjects.map((project) => (
-            <motion.div
-              key={project.id}
-              variants={itemVariants}
-              whileHover={{ y: -12, scale: 1.02 }}
-              className="group glass-card rounded-2xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-2xl hover:shadow-primary/20"
-            >
-              {/* Project Image */}
-              <div className="relative h-56 overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/60 to-transparent" />
-                
-                {/* Badge (Graduation/ITI Project) */}
-                {project.badge && (
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1.5 bg-gradient-to-r from-primary to-purple-600 backdrop-blur-sm text-white text-xs font-bold rounded-full shadow-lg">
-                      🎓 {project.badge}
-                    </span>
-                  </div>
-                )}
+          {/* Cosmic edge fading gradients */}
+          <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-black to-transparent z-20 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-black to-transparent z-20 pointer-events-none" />
 
-                {/* Featured Badge */}
-                {project.featured && !project.badge && (
-                  <div className="absolute top-4 right-4">
-                    <span className="px-3 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full">
-                      ⭐ Featured
-                    </span>
-                  </div>
-                )}
-
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-purple-600/95 to-primary/95 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center gap-4">
-                  <motion.a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 bg-white text-primary rounded-full hover:scale-110 transition-transform shadow-lg"
-                    onClick={(e) => e.stopPropagation()}
-                    whileHover={{ scale: 1.15, rotate: 5 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <ArrowTopRightOnSquareIcon className="w-6 h-6" />
-                  </motion.a>
-                  <motion.a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 bg-white text-primary rounded-full hover:scale-110 transition-transform shadow-lg"
-                    onClick={(e) => e.stopPropagation()}
-                    whileHover={{ scale: 1.15, rotate: -5 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <CodeBracketIcon className="w-6 h-6" />
-                  </motion.a>
-                </div>
-              </div>
-
-              {/* Project Info */}
-              <div className="p-6">
-                <div className="mb-3 flex items-center justify-between">
-                  <span className="text-xs text-primary font-semibold uppercase tracking-wider">
-                    {project.category}
-                  </span>
-                  {project.featured && (
-                    <span className="text-yellow-400 text-sm">★</span>
-                  )}
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-white group-hover:text-primary transition-colors leading-tight">
-                  {project.title}
-                </h3>
-                <p className="text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed">
-                  {project.shortDescription}
-                </p>
-
-                {/* Technologies */}
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {project.technologies.slice(0, 4).map((tech, techIndex) => (
-                    <span
-                      key={techIndex}
-                      className="px-2.5 py-1 bg-dark-800/70 text-gray-300 text-xs rounded-lg border border-dark-700/50 hover:border-primary/50 transition-colors"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                  {project.technologies.length > 4 && (
-                    <span className="px-2.5 py-1 bg-dark-800/70 text-primary text-xs rounded-lg border border-primary/30">
-                      +{project.technologies.length - 4}
-                    </span>
-                  )}
-                </div>
-
-                {/* View Details Link */}
-                <a
-                  href={`/projects/${project.id}`}
-                  className="inline-flex items-center gap-2 text-primary hover:gap-3 transition-all text-sm font-semibold group/link"
-                >
-                  View Details
-                  <svg className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </a>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+          <motion.div
+            ref={containerRef}
+            style={{ x }}
+            className="flex gap-16 md:gap-24 w-max bg-transparent"
+          >
+            {marqueeProjects.map((project, idx) => (
+              <ProjectCard
+                key={`${project.id}-${idx}`}
+                project={project as any}
+                index={idx}
+                onClick={() => {
+                  setIsPaused(true);
+                  setSelectedProject(project as any);
+                }}
+              />
+            ))}
+          </motion.div>
+        </div>
       </div>
+
+      {/* Holographic Spaceship Telemetry Modal */}
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => {
+          setSelectedProject(null);
+          setIsPaused(false);
+        }}
+      />
     </motion.div>
   );
 };

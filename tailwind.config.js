@@ -7,49 +7,49 @@ export default {
     extend: {
       /* ================= CORE SHADCN TOKENS ================= */
       colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
+        border: 'rgba(255, 255, 255, 0.08)',
+        input: 'rgba(255, 255, 255, 0.08)',
+        ring: '#38bdf8', // Planet Glow
 
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        background: '#000000', // تحويل الخلفية لـ Absolute Black الفضاء الحقيقي
+        foreground: '#e0f2fe', // Starlight
 
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+          DEFAULT: '#38bdf8', // Planet Glow
+          foreground: '#e0f2fe',
         },
 
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+          DEFAULT: '#312e81', // Nebula Purple
+          foreground: '#e0f2fe',
         },
 
-        /* ================= YOUR ORIGINAL PALETTE (KEPT) ================= */
+        /* ================= COSMIC DESIGN SYSTEM PALETTE ================= */
         dark: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
-          950: '#020617',
+          50: '#f0f9ff',
+          100: '#e0f2fe', // Starlight
+          200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8', // Planet Glow
+          500: '#0ea5e9',
+          600: '#0284c7',
+          700: '#1e40af', // Galaxy Blue
+          850: '#312e81', // Nebula Purple
+          900: '#000000', // Cosmic Black
+          950: '#020617', // Deep Space
         },
 
-        success: {
-          500: '#10b981',
-        },
+        cosmicBlue: '#1e40af', // Galaxy Blue
+        starlight: '#e0f2fe', // Starlight
+        planetGlow: '#38bdf8', // Planet Glow
+        deepSpace: '#020617', // Deep Space
+        cosmicBlack: '#000000', // Cosmic Black
+        nebulaPurple: '#312e81', // Nebula Purple
+        cyberCyan: '#06b6d4',   // لون لوحات التحكم المستقبلي المضاف
 
-        warning: {
-          500: '#f59e0b',
-        },
-
-        error: {
-          500: '#ef4444',
-        },
+        success: { 500: '#10b981' },
+        warning: { 500: '#f59e0b' },
+        error: { 500: '#ef4444' },
       },
 
       fontFamily: {
@@ -73,7 +73,8 @@ export default {
         'slide-in-left': 'slideInLeft 0.5s ease-out',
         'slide-in-right': 'slideInRight 0.5s ease-out',
         'bounce-gentle': 'bounceGentle 2s infinite',
-        float: 'float 6s ease-in-out infinite',
+        'float': 'float 6s ease-in-out infinite',
+        'spin-slow': 'spinSlow 140s linear infinite', // أنيميشن دوران الكوكب الغازي ببطء شديد
       },
 
       keyframes: {
@@ -98,9 +99,13 @@ export default {
           '50%': { transform: 'translateY(0)' },
         },
         float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
+          '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+          '50%': { transform: 'translateY(-15px) rotate(2deg)' }, // إضافة دوران خفيف جداً مع الطفو ليعطي طابع انعدام جاذبية حقيقي
         },
+        spinSlow: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        }
       },
 
       backdropBlur: {
@@ -108,8 +113,9 @@ export default {
       },
 
       boxShadow: {
-        glass: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-        glow: '0 0 20px rgba(59, 130, 246, 0.5)',
+        glass: '0 8px 32px 0 rgba(2, 6, 23, 0.5)',
+        glow: '0 0 25px rgba(56, 189, 248, 0.25)',
+        cyber: '0 0 35px rgba(6, 182, 212, 0.3)', // هالة التوهج السيانية الجديدة للاتصالات الكونية
       },
 
       borderRadius: {
@@ -125,15 +131,18 @@ export default {
     function ({ addUtilities }) {
       addUtilities({
         '.glass': {
-          background: 'rgba(255, 255, 255, 0.1)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
+          background: 'rgba(2, 6, 23, 0.3)', // تقليل التعتيم لزيادة وضوح النجوم المتحركة بالخلفية
+          backdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.06)',
         },
         '.glass-dark': {
-          background: 'rgba(0, 0, 0, 0.1)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          background: 'rgba(0, 0, 0, 0.7)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.03)',
         },
+        '.text-glow-cyan': {
+          'text-shadow': '0 0 10px rgba(6, 182, 212, 0.6)', // تأثير جعل الخطوط البرمجية مضيئة كالهولوغرام
+        }
       });
     },
   ],

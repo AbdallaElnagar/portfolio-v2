@@ -31,7 +31,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          ui: ['framer-motion', '@headlessui/react', '@heroicons/react'],
+          ui: ['framer-motion', '@heroicons/react'],
         },
       },
     },
