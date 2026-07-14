@@ -32,26 +32,57 @@ const Header = () => {
     if (location.pathname !== '/') return;
 
     const sections = ['home', 'about', 'skills', 'projects', 'experience', 'contact'];
-    const observers = sections.map((sectionId) => {
-      const el = document.getElementById(sectionId);
-      if (!el) return null;
+    let observers: { el: HTMLElement; observer: IntersectionObserver }[] = [];
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const entry = entries[0];
-          if (entry && entry.isIntersecting) {
-            setActiveSection(sectionId);
-          }
-        },
-        {
-          rootMargin: '-30% 0px -60% 0px',
+    const setupObservers = () => {
+      // Clear any existing observers first
+      observers.forEach((obs) => {
+        if (obs) obs.observer.unobserve(obs.el);
+      });
+      observers = [];
+
+      let allFound = true;
+      sections.forEach((sectionId) => {
+        const el = document.getElementById(sectionId);
+        if (!el) {
+          allFound = false;
+          return;
         }
-      );
-      observer.observe(el);
-      return { el, observer };
-    });
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            const entry = entries[0];
+            if (entry && entry.isIntersecting) {
+              setActiveSection(sectionId);
+            }
+          },
+          {
+            rootMargin: '-35% 0px -45% 0px', // slightly wider range for better intersection detection
+          }
+        );
+        observer.observe(el);
+        observers.push({ el, observer });
+      });
+
+      return allFound;
+    };
+
+    // Try immediately
+    const allFound = setupObservers();
+
+    // If not all elements are in the DOM (due to lazy loading), check periodically
+    let intervalId: any;
+    if (!allFound) {
+      intervalId = setInterval(() => {
+        const done = setupObservers();
+        if (done) {
+          clearInterval(intervalId);
+        }
+      }, 500);
+    }
 
     return () => {
+      if (intervalId) clearInterval(intervalId);
       observers.forEach((obs) => {
         if (obs) obs.observer.unobserve(obs.el);
       });

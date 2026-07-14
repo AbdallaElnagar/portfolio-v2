@@ -13,7 +13,7 @@ interface Star {
   isCyan: boolean;
 }
 
-const N          = 150;
+const N          = 420;
 const REPEL_R    = 110;       // px – repulsion bubble radius
 const REPEL_STR  = 34;        // max displacement force
 const SPRING     = 0.048;     // spring-return stiffness
@@ -33,7 +33,10 @@ export const BackgroundSpace = () => {
     const onLeave = () => { mouse.current.x = -9999; mouse.current.y = -9999; };
     const onScroll = () => {
       const cy = window.scrollY;
-      scroll.current.vel   = Math.min(Math.abs(cy - scroll.current.lastY) * 0.05, 10);
+      const isMobile = window.innerWidth < 768;
+      const multiplier = isMobile ? 0.03 : 0.3;
+      const maxVel = isMobile ? 5 : 60;
+      scroll.current.vel   = Math.min(Math.abs(cy - scroll.current.lastY) * multiplier, maxVel);
       scroll.current.lastY = cy;
     };
     window.addEventListener('mousemove', onMove);
@@ -74,7 +77,9 @@ export const BackgroundSpace = () => {
     function init() {
       const targetW = W || 800;
       const targetH = H || 600;
-      stars = Array.from({ length: N }, () => {
+      const isMobile = targetW < 768;
+      const count = isMobile ? 30 : N;
+      stars = Array.from({ length: count }, () => {
         const x = Math.random() * targetW;
         const y = Math.random() * targetH;
         return {
@@ -83,7 +88,9 @@ export const BackgroundSpace = () => {
           maxOpacity: Math.random() * 0.55 + 0.45,  // 0.45–1.0
           opacity:    Math.random(),
           phase:      Math.random() * Math.PI * 2,
-          phaseSpeed: Math.random() * 0.008 + 0.002,
+          phaseSpeed: isMobile
+            ? Math.random() * 0.008 + 0.002
+            : Math.random() * 0.018 + 0.005,
           isCyan:     Math.random() > 0.86,
         };
       });
@@ -119,8 +126,10 @@ export const BackgroundSpace = () => {
         ctx.fillRect(0, 0, W, H);
       }
 
+      const isMobile = W < 768;
+
       scroll.current.vel *= 0.90;
-      const warpDelta = scroll.current.vel * 0.15; // extra downward drift when scrolling
+      const warpDelta = scroll.current.vel * (isMobile ? 0.01 : 0.4); // extra downward drift when scrolling
 
       const mx = mouse.current.x;
       const my = mouse.current.y;
@@ -130,7 +139,9 @@ export const BackgroundSpace = () => {
 
       stars.forEach((s, idx) => {
         // Continuous slow background travel drift (larger stars drift faster)
-        const baseDrift = 0.02 + (s.r * 0.015);
+        const baseDrift = isMobile
+          ? (0.02 + (s.r * 0.015)) * 0.35
+          : 0.08 + (s.r * 0.04);
         s.oy += baseDrift + warpDelta;
 
         // Wrap home coordinates if they go off screen
